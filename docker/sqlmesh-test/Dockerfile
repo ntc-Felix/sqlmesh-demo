@@ -1,5 +1,13 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim
+FROM python:3.10
+
+RUN apt-get update && apt-get install -y libpq-dev
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+
+# Install psycopg2 for PostgreSQL support
+RUN pip install psycopg2-binary==2.9.1
 
 # Set the working directory to /app
 WORKDIR /app
