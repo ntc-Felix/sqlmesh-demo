@@ -47,7 +47,7 @@ spec:
           image: sqlmesh:0.8.1-test
           ports:
             - containerPort: 8000
-          command: ["sh", "-c", "cd .. ; sleep 5; cd git/rev*; cd sqlmesh; sqlmesh ide --port 8000"]
+          command: ["sh", "-c", "cd .. ; sleep 5; cd git/current; cd sqlmesh; sqlmesh ide --port 8000"]
           volumeMounts:
             - name: content-from-git
               mountPath: /git
