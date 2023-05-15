@@ -33,7 +33,7 @@ spec:
             - --depth=1
             - --wait=5
             #- --period=5
-            #- --link=current
+            - --dest=current
             - --root=/git
           volumeMounts:
             - name: content-from-git
