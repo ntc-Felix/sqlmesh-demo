@@ -1,0 +1,8 @@
+digraph {
+	node [shape=box]
+	"sqlmesh_example.incremental_model"
+	"sqlmesh_example.seed_model" -> "sqlmesh_example.incremental_model"
+	"sqlmesh_example.seed_model"
+	"sqlmesh_example.full_model"
+	"sqlmesh_example.incremental_model" -> "sqlmesh_example.full_model"
+}

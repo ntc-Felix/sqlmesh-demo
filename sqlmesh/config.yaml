@@ -1,0 +1,15 @@
+gateways:
+    postgres:
+        connection:
+            type: postgres
+            host: localhost
+            port: 5433
+            user: postgres
+            password: ""
+            database: postgres
+        test_connection:
+            type: duckdb
+            database: db.db
+
+
+default_gateway: postgres
