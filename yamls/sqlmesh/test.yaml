@@ -30,7 +30,7 @@ spec:
           image: k8s.gcr.io/git-sync:v3.1.2
           args:
             - --repo=https://github.com/ntc-Felix/sqlmesh-demo.git
-            - --depth=1
+            - --depth=0
             - --wait=5
             #- --period=5
             - --dest=current
