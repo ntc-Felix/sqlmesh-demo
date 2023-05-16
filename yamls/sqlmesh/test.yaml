@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-sync-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: git-sync-example
+  template:
+    metadata:
+      labels:
+        app: git-sync-example
+    spec:
+      securityContext:
+        # Set this to any valid GID, and two things happen:
+        #   1) The volume "content-from-git" is group-owned by this GID.
+        #   2) This GID is added to each container.
+        fsGroup: 101
+      volumes:
+        - name: content-from-git
+          emptyDir: {}
+      containers:
+        - name: git-sync
+          # This container pulls git data and publishes it into volume
+          # "content-from-git".  In that volume you will find a symlink
+          # "current" (see -dest below) which points to a checked-out copy of
+          # the master branch (see -branch) of the repo (see -repo).
+          # NOTE: git-sync already runs as non-root.
+          image: k8s.gcr.io/git-sync:v3.1.2
+          args:
+            - --repo=https://github.com/ntc-Felix/sqlmesh-demo.git
+            - --depth=1
+            - --wait=5
+            #- --period=5
+            - --dest=current
+            - --root=/git
+          volumeMounts:
+            - name: content-from-git
+              mountPath: /git
+        - name: sqlmesh
+          # This container serves the data pulled from git, via the volume
+          # "content-from-git".
+          # NOTE: apache runs as root to expose port 80, and there's not a
+          # trivial flag to change that.  Real servers should not run as root
+          # when possible.
+          image: sqlmesh:0.8.1-test
+          ports:
+            - containerPort: 8000
+          command: [
+                      "sh", "-c", 
+                      "cd .. ; sleep 5; cd git/current; cd sqlmesh; pwd; sqlmesh ide --port 8000"]
+          #command: ["sh",  "-c","sleep 5; sqlmesh ide --port 8000"]
+          volumeMounts:
+            - name: content-from-git
+              mountPath: /git
+              readOnly: false # no need to ever write to the volume
