@@ -50,7 +50,7 @@ spec:
           command: [
                       "sh", "-c", 
                       "cd .. ; sleep 5; cd git/current; cd sqlmesh; pwd; sqlmesh ide --port 8000"]
-          #command: ["sh", "-c","sleep 5; sqlmesh ide --port 8000"]
+          #command: ["sh",  "-c","sleep 5; sqlmesh ide --port 8000"]
           volumeMounts:
             - name: content-from-git
               mountPath: /git
