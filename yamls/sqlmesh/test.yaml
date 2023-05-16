@@ -30,7 +30,7 @@ spec:
           image: k8s.gcr.io/git-sync:v3.1.2
           args:
             - --repo=https://github.com/ntc-Felix/sqlmesh-demo.git
-            - --depth=0
+            - --depth=1
             - --wait=5
             #- --period=5
             - --dest=current
@@ -44,13 +44,23 @@ spec:
           # NOTE: apache runs as root to expose port 80, and there's not a
           # trivial flag to change that.  Real servers should not run as root
           # when possible.
-          image: sqlmesh:0.8.1-test
+          image: sqlmesh:0.8.1-test-7
           ports:
             - containerPort: 8000
-          command: [
-                      "sh", "-c", 
-                      "cd .. ; sleep 5; cd git/current; cd sqlmesh; pwd; sqlmesh ide --port 8000"]
-          #command: ["sh",   "-c","sleep 5; sqlmesh ide --port 8000"]
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CONTAINER_NAME
+              value: sqlmesh
+            - name: GITSYNC_ENV
+              value: git/current/sqlmesh
+          #command: ["sh", "-c"," cd git/current/sqlmesh"] 
           volumeMounts:
             - name: content-from-git
               mountPath: /git

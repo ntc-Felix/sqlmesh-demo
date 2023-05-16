@@ -10,13 +10,13 @@ ENV PYTHONUNBUFFERED=1
 RUN pip install psycopg2-binary==2.9.1
 
 # Set the working directory to /app
-WORKDIR /app
+#WORKDIR /app
 
 # Copy the current directory contents into the container at /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r app/requirements.txt
 
 # Set the environment variable for the application port
 ENV PORT=8000
@@ -25,4 +25,4 @@ ENV PORT=8000
 EXPOSE $PORT
 
 # Run the command to start the application
-CMD ["sleep","infinity"]
+CMD ["python","app/main.py"]
