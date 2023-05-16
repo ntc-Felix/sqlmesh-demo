@@ -34,7 +34,7 @@ spec:
               command:
                 - stat
                 - /git/current/sqlmesh
-          lifecycle:
+          #lifecycle:
             #postStart:
             #  exec:
             #    command:
@@ -69,3 +69,4 @@ spec:
             - name: content-from-git
               mountPath: /git
               readOnly: false
+          

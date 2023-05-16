@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: git-sync-example
+  namespace: sqlmesh
 spec:
   replicas: 1
   selector:
@@ -17,6 +18,7 @@ spec:
         #   1) The volume "content-from-git" is group-owned by this GID.
         #   2) This GID is added to each container.
         fsGroup: 101
+      restartPolicy: Always
       volumes:
         - name: content-from-git
           emptyDir: {}
